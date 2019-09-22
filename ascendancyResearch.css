@@ -1,0 +1,22 @@
+body {
+	background-color: #000000;
+	color: #ffffff;
+}
+a {
+	color: skyblue;
+}
+a:visited {
+	color: plum;
+}
+
+.highlighted {
+	background-color: #F6F98F;
+	color: black;
+}
+.researched {
+	color: #666666;
+    border: 1px solid #CCCCCC;
+}
+.clickable:hover {
+	color: #000000;
+}
