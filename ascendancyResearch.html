@@ -1,32 +1,7 @@
 <html>
 <head>
 <title>Ascendancy Research</title>
-<!link href="ascendancyResearch.css" rel="stylesheet">
-<style>
-body {
-	background-color: #000000;
-	color: #ffffff;
-}
-a {
-	color: skyblue;
-}
-a:visited {
-	color: plum;
-}
-
-.highlighted {
-	background-color: #F6F98F;
-	color: black;
-}
-.researched {
-	color: #666666;
-    border: 1px solid #CCCCCC;
-}
-.clickable:hover {
-	color: #000000;
-}
-
-</style>
+<link href="ascendancyResearch.css" rel="stylesheet">
 </head>
 <body>
 <script type="text/javascript" src="ascendancyDependancy.json"></script>
@@ -44,7 +19,10 @@ var graph = new Graph(ascendancyDependancy);
 //console.log(graph.bfs("Nanofocusing"));
 var myResults = document.getElementById("results")
 
+var research_completed = [];
+
 function researched(row){
+	research_completed.push(row.cells[0].innerHTML);
 	row.classList.toggle("researched")
 }
 
@@ -61,11 +39,22 @@ function researchRequirement(e){
 	htmlCode.push("<table><tr><th>Research Name</th><th>Length</th><th>Items Enabled</th></tr>");
 	for (i = 0; i < results.length; i++) 
 	{
-		var row = "<tr onclick=\"researched(this)\"><td>" + results[i]["name"] + "</td><td>" + results[i]["days"] + " days</td><td>" + results[i]["items"] + "</td></tr>"
+		var already_researched = research_completed.includes(results[i]["name"])
+		var row = "<tr id=\"row" + i + "\" onclick=\"researched(this)\" " + ( already_researched ?  "class=\"researched\"" : "") + ">" +
+			"<td>" + results[i]["name"] + "</td>" +
+			"<td>" + results[i]["days"] + " days</td>" + 
+			"<td>" + results[i]["items"] + "</td></tr>"
 		htmlCode.push(row);
 	}
 	htmlCode.push("</table>");
 	results_box.innerHTML = htmlCode.join('');
+}
+
+function completed(row) {
+	// get row id
+	// convert to cell id
+	// add cell innerhtml to researched list
+	// apply class
 }
 
 function applyHighlight(row){
