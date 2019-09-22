@@ -1,0 +1,332 @@
+ascendancyDependancyData = "{\
+	'Orbital Structures': {\
+		'requires': ['none'],\
+		'days': 50,\
+		'items': ['Shipyard', 'Orbital Shield']\
+	},\
+	'Interplanetary Exploration': {\
+		'requires': ['Orbital Structures'],\
+		'days': 50,\
+		'items': ['Ships - Small and Medium', 'Proton Shaver']\
+	},\
+	'Tonklin Diary': {\
+		'requires': ['none'],\
+		'days': 50,\
+		'items': ['Tonklin Motor', 'Tonklin Frequency Analyzer']\
+	},\
+	'Xenobiology': {\
+		'requires': ['none'],\
+		'days': 90,\
+		'items': ['Xeno Archaeological Dig']\
+	},\
+	'Environmental Encapsulation': {\
+		'requires': ['Xenobiology'],\
+		'days': 50,\
+		'items': ['Colony Base', 'Ion Wrap', 'Colonizer']\
+	},\
+	'Spectral Analysis': {\
+		'requires': ['Tonklin Diary'],\
+		'days': 120,\
+		'items': ['Fourier Missiles']\
+	},\
+	'Superconductivity': {\
+		'requires': ['Tonklin Diary', 'Xenobiology'],\
+		'days': 100,\
+		'items': ['Surface Shield', 'Mass Barrage Gun']\
+	},\
+	'Spacetime Surfing': {\
+		'requires': ['Tonklin Diary', 'Interplanetary Exploration'],\
+		'days': 90,\
+		'items': ['Star Lane Drive']\
+	},\
+	'Advanced Chemistry': {\
+		'requires': ['Environmental Encapsulation'],\
+		'days': 100,\
+		'items': ['Artificial Hypdroponifer', 'Ion Banger']\
+	},\
+	'Advanced Interferometry': {\
+		'requires': ['Spectral Analysis'],\
+		'days': 90,\
+		'items': ['Subspace Phase Array', 'Invasion Module']\
+	},\
+	'Cloaking': {\
+		'requires': ['Advanced Interferometry'],\
+		'days': 1800,\
+		'items': ['Surface Cloaker', 'Orbital Cloaker', 'Cloaker (ship)']\
+	},\
+	'Power Conversion': {\
+		'requires': ['Spacetime Surfing'],\
+		'days': 100,\
+		'items': ['Orbital Missile Base', 'Subatomic Scoop']\
+	},\
+	'Gravity Control': {\
+		'requires': ['Spacetime Surfing'],\
+		'days': 560,\
+		'items': ['Quantum Singularity Launcher']\
+	},\
+	'Hyperlogic': {\
+		'requires': ['Advanced Interferometry', 'Advanced Chemistry'],\
+		'days': 1120,\
+		'items': ['Research Campus', 'Intellect Scrambler', 'X-Ray Megaglasses']\
+	},\
+	'Momentum Deconservation': {\
+		'requires': ['Spacetime Surfing'],\
+		'days': 280,\
+		'items': ['Concussion Shield']\
+	},\
+	'Diplomatics': {\
+		'requires': ['Hyperlogic'],\
+		'days': 2000,\
+		'items': ['Observation Installation', 'Alien Hospitality']\
+	},\
+	'Molecular Explosives': {\
+		'requires': ['Spectral Analysis', 'Power Conversion'],\
+		'days': 720,\
+		'items': ['Phase Bomb', 'Mass Condensor']\
+	},\
+	'Strong Force Weakening': {\
+		'requires': ['Power Conversion'],\
+		'days': 980,\
+		'items': ['Molecular Disassociator']\
+	},\
+	'Level Logic': {\
+		'requires': ['Hyperlogic'],\
+		'days': 3300,\
+		'items': ['Scientist Takeover']\
+	},\
+	'Light Bending': {\
+		'requires': ['Gravity Control'],\
+		'days': 2560,\
+		'items': ['Wave Scatterer', 'Replenisher']\
+	},\
+	'Gravimetrics': {\
+		'requires': ['Gravity Control'],\
+		'days': 1320,\
+		'items': ['Orbital Docks', 'Molecular Tie Down']\
+	},\
+	'EM Field Coupling': {\
+		'requires': ['Light Bending'],\
+		'days': 4200,\
+		'items': ['Electromagnetic Pulser', 'Aural Cloud Constructor']\
+	},\
+	'Mass Phasing': {\
+		'requires': ['Gravimetrics'],\
+		'days': 2200,\
+		'items': ['Gravimetric Catapult']\
+	},\
+	'Thought Analysis': {\
+		'requires': ['Level Logic'],\
+		'days': 7700,\
+		'items': ['Engineering Retreat']\
+	},\
+	'Advanced Fun Techniques': {\
+		'requires': ['Diplomatics'],\
+		'days': 5580,\
+		'items': ['Logic Factory', 'Endless Party']\
+	},\
+	'Positron Guidance': {\
+		'requires': ['Molecular Explosives'],\
+		'days': 2400,\
+		'items': ['Industrial Megafacility', 'Positron Bouncer']\
+	},\
+	'Subatomics': {\
+		'requires': ['Positron Guidance'],\
+		'days': 3300,\
+		'items': ['Hyperpower Plant', 'Quark Express']\
+	},\
+	'Advanced Exploration': {\
+		'requires': ['Mass Phasing', 'Hyperlogic'],\
+		'days': 4140,\
+		'items': ['Star Lane Hyperdrive', 'Large Ship Hull']\
+	},\
+	'Gravimetric Combustion': {\
+		'requires': ['Gravimetrics', 'Positron Guidance'],\
+		'days': 2600,\
+		'items': ['Graviton Projector', 'Toroidal Blaster']\
+	},\
+	'Plasmatics': {\
+		'requires': ['Subatomics'],\
+		'days': 5700,\
+		'items': ['Plasmatron', 'Plasma Coupler']\
+	},\
+	'Planetary Replenishment': {\
+		'requires': ['Gravimetric Combustion', 'Environmental Encapsulation'],\
+		'days': 2560,\
+		'items': ['Habitat', 'Terraforming']\
+	},\
+	'Momentum Reflection': {\
+		'requires': ['Subatomics', 'Momentum Deconservation'],\
+		'days': 4420,\
+		'items': ['Gravity Distorter']\
+	},\
+	'Large Scale Construction': {\
+		'requires': ['Gravimetric Combustion', 'Advanced Exploration'],\
+		'days': 4200,\
+		'items': ['Metroplex', 'Gigantic Ship Hull']\
+	},\
+	'Hyperradiation': {\
+		'requires': ['Momentum Reflection', 'EM Field Coupling'],\
+		'days': 5040,\
+		'items': ['Hyperwave Tympanum', 'Van Creeg Hypersplicer']\
+	},\
+	'Superstring Compression': {\
+		'requires': ['Plasmatics'],\
+		'days': 3640,\
+		'items': ['Hyperfuel']\
+	},\
+	'Muratroyd Hypothesis': {\
+		'requires': ['Superstring Compression', 'Level Logic'],\
+		'days': 5940,\
+		'items': ['Short Range Orbital Whopper', 'Murgatroyd&#39;s Knower', 'Gyro - Inductor']\
+	},\
+	'Energy Redirection': {\
+		'requires': ['Hyperradiation'],\
+		'days': 4400,\
+		'items': ['Deactotron', 'Recaller', 'Sacrificial Orb']\
+	},\
+	'Stasis Field Science': {\
+		'requires': ['Hyperradiation'],\
+		'days': 3600,\
+		'items': ['Tractor Beam', 'Brunswik Dissipator', 'Tractor Beam']\
+	},\
+	'Matter Duplication': {\
+		'requires': ['Superstring Compression', 'Momentum Reflection'],\
+		'days': 5040,\
+		'items': ['Cloning Plant', 'Disarmer']\
+	},\
+	'Scientific Sorcery': {\
+		'requires': ['Muratroyd Hypothesis'],\
+		'days': 5400,\
+		'items': ['Smart Bomb', 'Containment Device']\
+	},\
+	'Starlane Anatomy': {\
+		'requires': ['Energy Redirection', 'Plasmatics'],\
+		'days': 3450,\
+		'items': ['Lane Blocker', 'Lane Destabilizer']\
+	},\
+	'Coherent Photonics': {\
+		'requires': ['Energy Redirection'],\
+		'days': 7000,\
+		'items': ['Ueberlaser', 'Cannibalizer']\
+	},\
+	'Microbotics': {\
+		'requires': ['Matter Duplication'],\
+		'days': 9020,\
+		'items': ['Automation']\
+	},\
+	'Energy Focusing': {\
+		'requires': ['Coherent Photonics', 'Muratroyd Hypothesis'],\
+		'days': 5220,\
+		'items': ['Myrmidonic Carbonizer', 'Accutron']\
+	},\
+	'Inertial Control': {\
+		'requires': ['Starlane Anatomy', 'Matter Duplication'],\
+		'days': 10080,\
+		'items': ['Inertia Negator']\
+	},\
+	'Advanced Planetary Armaments': {\
+		'requires': ['Coherent Photonics', 'Large Scale Construction'],\
+		'days': 12240,\
+		'items': ['Surface Mega Shield', 'Long Range Orbital Whopper']\
+	},\
+	'Fergnatz&#39;s Last Theorem': {\
+		'requires': ['Scientific Sorcery'],\
+		'days': 10880,\
+		'items': ['Fergnatz Lens', 'Gizmogrifier']\
+	},\
+	'Hypergeometry': {\
+		'requires': ['Fergnatz&#39;s Last Theorem'],\
+		'days': 12920,\
+		'items': ['Hypersphere Driver', 'Hyperswapper']\
+	},\
+	'Repulsion Beam Tech': {\
+		'requires': ['Energy Focusing'],\
+		'days': 7040,\
+		'items': ['Fleet Disperser']\
+	},\
+	'Hyperwave Technology': {\
+		'requires': ['Energy Focusing', 'Hyperradiation'],\
+		'days': 7260,\
+		'items': ['Orbital Mega Shield', 'Hyperwave Nullifier']\
+	},\
+	'Megagraph Theory': {\
+		'requires': ['Fergnatz&#39;s Last Theorem'],\
+		'days': 11760,\
+		'items': ['Internet']\
+	},\
+	'Nanoenergons': {\
+		'requires': ['Fergnatz&#39;s Last Theorem', 'Hyperwave Technology'],\
+		'days': 12580,\
+		'items': ['Nanowave Decoupling Net', 'Nanotwirler']\
+	},\
+	'Ecosphere Phase Control': {\
+		'requires': ['Hypergeometry', 'Planetary Replenishment'],\
+		'days': 9240,\
+		'items': ['Fertilization Plant']\
+	},\
+	'Teleinfiltration': {\
+		'requires': ['Hyperwave Technology', 'Thought Analysis'],\
+		'days': 8580,\
+		'items': ['Shield Blaster', 'Specialty Blaster']\
+	},\
+	'Hyperwave Emission Control': {\
+		'requires': ['Hyperwave Technology'],\
+		'days': 9460,\
+		'items': ['Backfirer']\
+	},\
+	'Hyperdrive Technology': {\
+		'requires': ['Starlane Anatomy', 'Teleinfiltration'],\
+		'days': 8800,\
+		'items': ['Lane Magnetron']\
+	},\
+	'Action At A Distance': {\
+		'requires': ['Teleinfiltration', 'Megagraph Theory'],\
+		'days': 12960,\
+		'items': ['Moving Parts Explorer']\
+	},\
+	'Doom Mechanization': {\
+		'requires': ['Teleinfiltration', 'Hyperwave Emission Control'],\
+		'days': 37600,\
+		'items': ['Disintegrator', 'Self Destructotron']\
+	},\
+	'Nanofocusing': {\
+		'requires': ['Nanoenergons'],\
+		'days': 22080,\
+		'items': ['Nanomanipulator']\
+	},\
+	'Snooping': {\
+		'requires': ['Thought Analysis', 'Hyperwave Emission Control'],\
+		'days': 11520,\
+		'items': ['Lane Endoscope']\
+	},\
+	'Self Modifying Structures': {\
+		'requires': ['Nanofocusing', 'Microbotics'],\
+		'days': 12000,\
+		'items': ['Remote Repair Facility']\
+	},\
+	'Nanopropulsion': {\
+		'requires': ['Nanoenergons', 'Hyperdrive Technology'],\
+		'days': 17600,\
+		'items': ['Nanowave Space Bender']\
+	},\
+	'Nanodeflection': {\
+		'requires': ['Nanofocusing', 'Inertial Control'],\
+		'days': 21600,\
+		'items': ['Nanoshell']\
+	},\
+	'Accel Energy Replenishment': {\
+		'requires': ['Megagraph Theory', 'Nanopropulsion'],\
+		'days': 12480,\
+		'items': ['Lush Growth Bomb']\
+	},\
+	'Gravity Flow Control': {\
+		'requires': ['Nanopropulsion'],\
+		'days': 12720,\
+		'items': ['Gravimetric Condensor']\
+	},\
+	'Illusory Machinations': {\
+		'requires': ['Accel Energy Replenishment', 'Nanofocusing'],\
+		'days': 33000,\
+		'items': ['Invulnerablizer']\
+	}\
+}";

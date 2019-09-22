@@ -1,0 +1,155 @@
+<html>
+<head>
+<title>Ascendancy Research</title>
+<!link href="ascendancyResearch.css" rel="stylesheet">
+<style>
+body {
+	background-color: #000000;
+	color: #ffffff;
+}
+a {
+	color: skyblue;
+}
+a:visited {
+	color: plum;
+}
+
+.highlighted {
+	background-color: #F6F98F;
+	color: black;
+}
+.researched {
+	color: #666666;
+    border: 1px solid #CCCCCC;
+}
+.clickable:hover {
+	color: #000000;
+}
+
+</style>
+</head>
+<body>
+<script type="text/javascript" src="ascendancyDependancy.json"></script>
+<script type="text/javascript" src="ascendancyResearch.js"></script>
+<script type="text/javascript">
+var text = ascendancyDependancyData.replace(/'/g, '"');
+//alert(text);
+var ascendancyDependancy = JSON.parse(text);
+//alert(ascendancyDependancy["Superconductivity"]["requires"]);
+var graph = new Graph(ascendancyDependancy);
+//graph.printGraph();
+//console.log("-- Results for Interplanetary Exploration:");
+//console.log(graph.bfs("Interplanetary Exploration"));
+//console.log(graph.getResearchForItem("Nanomanipulator"));
+//console.log(graph.bfs("Nanofocusing"));
+var myResults = document.getElementById("results")
+
+function researched(row){
+	row.classList.toggle("researched")
+}
+
+function researchRequirement(e){
+	// User clicked on the research requirement
+	// Copy it to the search_research box and find results
+	if(e.value == "") return;
+	var search_research_box = document.getElementById("search_research");
+	var results_box = document.getElementById("results");	
+	// Single quotes need to be escaped
+	var results = graph.bfs(search_research_box.value.replace("'","&#39;"));
+	var htmlCode = [];
+	htmlCode.push("<b>Required research for " + search_research_box.value + ":</b><hr />");
+	htmlCode.push("<table><tr><th>Research Name</th><th>Length</th><th>Items Enabled</th></tr>");
+	for (i = 0; i < results.length; i++) 
+	{
+		var row = "<tr onclick=\"researched(this)\"><td>" + results[i]["name"] + "</td><td>" + results[i]["days"] + " days</td><td>" + results[i]["items"] + "</td></tr>"
+		htmlCode.push(row);
+	}
+	htmlCode.push("</table>");
+	results_box.innerHTML = htmlCode.join('');
+}
+
+function applyHighlight(row){
+	var highlighted = document.getElementsByClassName("highlighted");
+	for(var i = 0; i < highlighted.length; i++)
+	{
+	   highlighted.item(i).classList.toggle("highlighted");
+	}
+	row.classList.toggle("highlighted");
+}
+
+function selectItem(item){
+	// User clicked on a suggestion
+	// Insert it into the item search box and find results
+	var search_item_box = document.getElementById("search_item");
+	var research_box = document.getElementById("search_research");
+	search_item_box.value = item.innerHTML;	
+	applyHighlight(item);
+	research_box.value = graph.getResearchForItem(item.innerHTML).replace("&#39;","'");
+	researchRequirement(research_box);
+}
+
+function selectResearch(research){
+	// User clicked on a suggestion
+	// Insert it into the item search box and find results
+	var search_item_box = document.getElementById("search_item");
+	var research_box = document.getElementById("search_research");
+	search_item_box = "";
+	applyHighlight(research);
+	research_box.value = research.innerHTML;	
+	researchRequirement(research_box);
+}
+
+function onItemChanged(e){
+	// null out associated research requirement
+	var itemRequires = document.getElementById("search_research");
+	itemRequires.value = ""; 
+    if(e.value == "") return;
+	// get relevant items
+	var myOptions = document.getElementById("options_list");
+	var similarItems = graph.getSimilarItems(e.value);	
+	var htmlCode = [];
+	htmlCode.push("<b>Similar items (click one):</b><hr />");
+	for (i = 0; i < similarItems.length; i++) 
+	{
+		htmlCode.push("<span class=\"clickable\" id=\"" + i + "\" onclick=\"selectItem(this)\">" + similarItems[i] + "</span><br />")
+	}
+    myOptions.innerHTML = (htmlCode).join('');
+	myOptions.style.backgroundColor = 'green';
+}
+
+
+function onResearchChanged(e){
+	// null out associated research requirement
+	var item = document.getElementById("search_item");
+	item.value = ""; 
+    if(e.value == "") return;
+	// get relevant items
+	var myOptions = document.getElementById("options_list");
+	var similarResearch = graph.getSimilarResearch(e.value);	
+	var htmlCode = [];
+	htmlCode.push("<b>Similar research (click one):</b><hr />");
+	for (i = 0; i < similarResearch.length; i++) 
+	{
+		htmlCode.push("<span class=\"clickable\" id=\"" + i + "\" onclick=\"selectResearch(this)\">" + similarResearch[i] + "</span><br />")
+	}
+    myOptions.innerHTML = (htmlCode).join('');
+	myOptions.style.backgroundColor = 'blue';
+}
+
+</script>
+<div id="header"><h1>Ascendancy Research Requirements</h1><p><a href="https://en.wikipedia.org/wiki/Ascendancy_(video_game)" title="Ascendancy on Wikipedia">Ascendancy</a> is a turn-based strategy PC game from the 1990s. One aspect of the game is incremental research. This tool lets the user search for items or research fields and provides the required fields to enable the desired item. Enter a desired item or research field in one of the text fields below.</p><p>Requirements data courtesy of the <a href="https://www.b-sting.nl/ascendancy/research-list.html" title="research list at Ascendancy: The Manual">Ascendancy Manual at b-sting.nl</a>. As of this writing, Ascendancy is not available for purchase at Good Old Games, but <a href="https://www.gog.com/wishlist/games/ascendancy" title="Ascendancy at GoG">a wishlist entry is posted at the GoG forum</a>.</p>
+</div>
+<div id="input" style="display: block;width:100%;margin-top:50px;"><hr />
+<form name="mapper">
+Item: <input type="text" name="search_item" id="search_item" onkeyup="onItemChanged(this)" onfocus="this.select()"> 
+Research: <input type="text" name="search_research" id="search_research" onclick="researchRequirement(this)" onkeyup="onResearchChanged(this)" onfocus="this.select()"><br />
+<hr />
+</form>
+</div>
+
+<div id="options_list" style="float:left; border:1px solid black; padding:10px;display: block;">
+</div>
+<div id="results" style="float:left; border:1px solid black;padding:10px;display: block;">
+</div>
+</body>
+</html>
