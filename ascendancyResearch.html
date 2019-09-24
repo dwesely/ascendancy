@@ -20,41 +20,64 @@ var graph = new Graph(ascendancyDependancy);
 var myResults = document.getElementById("results")
 
 var research_completed = [];
+// TODO: Add a box that lists researched items
+// Allow click to remove or button to purge
 
 function researched(row){
-	research_completed.push(row.cells[0].innerHTML);
 	row.classList.toggle("researched")
+	var clicked_research = row.cells[0].innerHTML
+	if(research_completed.includes(clicked_research)) {
+		var index = research_completed.indexOf(clicked_research);
+		console.log("removing " + research_completed[index]);
+		research_completed.splice(index, 1);
+	} else {
+		research_completed.push(row.cells[0].innerHTML);
+	}
+	
+	// Build researched box
+	var htmlCode = [];
+	htmlCode.push("<b>Completed research:</b><hr /><table>");
+	for (i = 0; i < research_completed.length; i++) {
+		var researched_item = "<tr class=\"researched\" onclick=\"researched(this)\"><td>" + research_completed[i] + "</td></tr>";
+		htmlCode.push(researched_item);
+	}	
+	htmlCode.push("</table>");
+	
+	var researched_box = document.getElementById("researched");	
+	researched_box.innerHTML = htmlCode.join('');
+	
+	refreshRequirements();
 }
 
-function researchRequirement(e){
-	// User clicked on the research requirement
-	// Copy it to the search_research box and find results
-	if(e.value == "") return;
+function refreshRequirements(){
 	var search_research_box = document.getElementById("search_research");
 	var results_box = document.getElementById("results");	
 	// Single quotes need to be escaped
-	var results = graph.bfs(search_research_box.value.replace("'","&#39;"));
+	var results = graph.bfs(search_research_box.value, research_completed);
 	var htmlCode = [];
 	htmlCode.push("<b>Required research for " + search_research_box.value + ":</b><hr />");
 	htmlCode.push("<table><tr><th>Research Name</th><th>Length</th><th>Items Enabled</th></tr>");
 	for (i = 0; i < results.length; i++) 
 	{
+		//console.log(i + " " + results[i]);
+		//if(typeof results[i] !== 'undefined'){
 		var already_researched = research_completed.includes(results[i]["name"])
 		var row = "<tr id=\"row" + i + "\" onclick=\"researched(this)\" " + ( already_researched ?  "class=\"researched\"" : "") + ">" +
 			"<td>" + results[i]["name"] + "</td>" +
 			"<td>" + results[i]["days"] + " days</td>" + 
 			"<td>" + results[i]["items"] + "</td></tr>"
 		htmlCode.push(row);
+		//}
 	}
 	htmlCode.push("</table>");
 	results_box.innerHTML = htmlCode.join('');
 }
 
-function completed(row) {
-	// get row id
-	// convert to cell id
-	// add cell innerhtml to researched list
-	// apply class
+function researchRequirement(e){
+	// User clicked on the research requirement
+	// Copy it to the search_research box and find results
+	if(e.value == "") return;
+	refreshRequirements();
 }
 
 function applyHighlight(row){
@@ -73,7 +96,7 @@ function selectItem(item){
 	var research_box = document.getElementById("search_research");
 	search_item_box.value = item.innerHTML;	
 	applyHighlight(item);
-	research_box.value = graph.getResearchForItem(item.innerHTML).replace("&#39;","'");
+	research_box.value = graph.getResearchForItem(item.innerHTML);
 	researchRequirement(research_box);
 }
 
@@ -139,6 +162,8 @@ Research: <input type="text" name="search_research" id="search_research" onclick
 <div id="options_list" style="float:left; border:1px solid black; padding:10px;display: block;">
 </div>
 <div id="results" style="float:left; border:1px solid black;padding:10px;display: block;">
+</div>
+<div id="researched" style="float:left; border:1px solid black;padding:10px;display: block;">
 </div>
 </body>
 </html>
