@@ -64,7 +64,7 @@ class Graph {
 	// based on: https://www.geeksforgeeks.org/implementation-graph-javascript/
     constructor(vertices)
 	{
-		this.data = vertices
+		this.data = new Object();
         this.noOfVertices = 0;
         this.AdjList = new Map(); // adjacency map for research
 		this.ItemList = new Object(); // mapping items to research
@@ -78,23 +78,26 @@ class Graph {
 		// add all vertices first
 		for (const key of keys) {
 		  // console.log(key);
-		  this.data[key]['name'] = key;
-		  //console.log(vertices[key]);
-		  this.addVertex(key);
-		  this.ResearchList[key] = '';
-		  for (const item of vertices[key]["items"]) {
-			// console.log(item + " requires " + key);
+		  var cleaned_key = key.replace("&#39;","'")
+		  this.data[cleaned_key] = vertices[key]
+		  this.data[cleaned_key]['name'] = cleaned_key;
+		  //console.log(this.data[cleaned_key]);
+		  this.addVertex(cleaned_key);
+		  this.ResearchList[cleaned_key] = '';
+		  for (const item of this.data[cleaned_key]["items"]) {
+			// console.log(item + " requires " + cleaned_key);
 			if(item != "none"){
-				this.ItemList[item] = key;
+				this.ItemList[item] = cleaned_key;
 			}
 		  }
 		}
 		
 		// add all edges second
-		for (const key of keys) {
+		const cleaned_keys = Object.keys(this.data)
+		for (const key of cleaned_keys) {
 		  // console.log(key);
-		  // console.log(vertices[key]["requires"]);
-		  for (const prerequisite of vertices[key]["requires"]) {
+		  // console.log(this.data[key]["requires"]);
+		  for (const prerequisite of this.data[key]["requires"]) {
 			// console.log(key + " requires " + prerequisite);
 			if(prerequisite != "none"){
 				this.addEdge(key, prerequisite);
@@ -205,7 +208,7 @@ class Graph {
 	}
 
 	// function to performs BFS
-	bfs(startingNode)
+	bfs(startingNode, completed)
 	{
 	 
 		// create a visited array
@@ -224,23 +227,27 @@ class Graph {
 		// loop until queue is element
 		while (!q.isEmpty()) {
 			// get the element from the queue
-			var getQueueElement = q.dequeue();
-	 
-			// passing the current vertex to callback funtion
-			// console.log(getQueueElement);
-			needed_research.push(this.data[getQueueElement]);
-	 
-			// get the adjacent list for current vertex
-			var get_List = this.AdjList.get(getQueueElement);
-	 
-			// loop through the list and add the element to the
-			// queue if it is not processed yet
-			for (var i in get_List) {
-				var neigh = get_List[i];
-	 
-				if (!visited[neigh]) {
-					visited[neigh] = true;
-					q.enqueue(neigh);
+			var getQueueElement = q.dequeue().replace("&#39;","'");
+			
+			if(!completed.includes(getQueueElement))
+			{
+		 
+				// passing the current vertex to callback funtion
+				// console.log(getQueueElement + this.data[getQueueElement]);
+				needed_research.push(this.data[getQueueElement]);
+		 
+				// get the adjacent list for current vertex
+				var get_List = this.AdjList.get(getQueueElement);
+		 
+				// loop through the list and add the element to the
+				// queue if it is not processed yet
+				for (var i in get_List) {
+					var neigh = get_List[i];
+		 
+					if (!visited[neigh]) {
+						visited[neigh] = true;
+						q.enqueue(neigh);
+					}
 				}
 			}
 		}
