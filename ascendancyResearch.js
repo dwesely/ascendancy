@@ -111,7 +111,7 @@ class Graph {
 	getSimilarItems(searchTerm)
 	{
 		this.SearchTerms = []
-		var searchTermUpper = searchTerm.toUpperCase()
+		var searchTermUpper = searchTerm.toUpperCase().split(" ")[0]
 		for (var key in this.ItemList)
 		{
 			// split key by space
@@ -145,7 +145,7 @@ class Graph {
 	getSimilarResearch(searchTerm)
 	{
 		this.SearchTerms = []
-		var searchTermUpper = searchTerm.toUpperCase()
+		var searchTermUpper = searchTerm.toUpperCase().split(" ")[0]
 		for (var key in this.ResearchList)
 		{
 			// split key by space

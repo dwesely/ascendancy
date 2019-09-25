@@ -3,7 +3,7 @@
 <title>Ascendancy Research</title>
 <link href="ascendancyResearch.css" rel="stylesheet">
 </head>
-<body>
+<body onload="refreshRequirements()">
 <script type="text/javascript" src="ascendancyDependancy.json"></script>
 <script type="text/javascript" src="ascendancyResearch.js"></script>
 <script type="text/javascript">
@@ -49,28 +49,55 @@ function researched(row){
 	refreshRequirements();
 }
 
+function logslider(position) {
+	/* https://stackoverflow.com/questions/846221/logarithmic-slider */
+  // position will be between 0 and 100
+  var minp = 1;
+  var maxp = 1000;
+
+  // The result should be between 1 an 2000
+  var minv = Math.log(1);
+  var maxv = Math.log(2000);
+
+  // calculate adjustment factor
+  var scale = (maxv-minv) / (maxp-minp);
+
+  return Math.ceil(Math.exp(minv + scale*(position-minp)));
+}
+
 function refreshRequirements(){
 	var search_research_box = document.getElementById("search_research");
 	var results_box = document.getElementById("results");	
 	// Single quotes need to be escaped
 	var results = graph.bfs(search_research_box.value, research_completed);
+	if(typeof results[0] === "undefined"){
+		results_box.innerHTML = "";
+		return "";
+	}
+	var total_days = 0;	
 	var htmlCode = [];
+	var slider = document.getElementById("slider_bar");
+	var slider_value = logslider(parseInt(slider.value));
+
 	htmlCode.push("<b>Required research for " + search_research_box.value + ":</b><hr />");
-	htmlCode.push("<table><tr><th>Research Name</th><th>Length</th><th>Items Enabled</th></tr>");
+	htmlCode.push("<table><tr><th>Research Name</th><th>Days</th><th>Items Enabled</th></tr>");
 	for (i = 0; i < results.length; i++) 
 	{
 		//console.log(i + " " + results[i]);
 		//if(typeof results[i] !== 'undefined'){
+		total_days = total_days + parseInt(results[i]["days"]);
+		scaled_days = Math.ceil(results[i]["days"]/slider_value);
 		var already_researched = research_completed.includes(results[i]["name"])
 		var row = "<tr id=\"row" + i + "\" onclick=\"researched(this)\" " + ( already_researched ?  "class=\"researched\"" : "") + ">" +
 			"<td>" + results[i]["name"] + "</td>" +
-			"<td>" + results[i]["days"] + " days</td>" + 
+			"<td>" + scaled_days + "</td>" + 
 			"<td>" + results[i]["items"] + "</td></tr>"
 		htmlCode.push(row);
 		//}
 	}
 	htmlCode.push("</table>");
-	results_box.innerHTML = htmlCode.join('');
+	var scaled_total_days = Math.ceil(total_days/slider_value);
+	results_box.innerHTML = htmlCode.join('').replace('</b>',' (' + scaled_total_days + ' total days)');
 }
 
 function researchRequirement(e){
@@ -120,13 +147,14 @@ function onItemChanged(e){
 	var myOptions = document.getElementById("options_list");
 	var similarItems = graph.getSimilarItems(e.value);	
 	var htmlCode = [];
-	htmlCode.push("<b>Similar items (click one):</b><hr />");
+	htmlCode.push("<b>Similar items (click one):</b><span style=\"float:right; border:1px solid black; padding:2px; margin:-2px; cursor: pointer;\" onclick=\"this.parentElement.style.display='none'\">X</span><hr />");
 	for (i = 0; i < similarItems.length; i++) 
 	{
 		htmlCode.push("<span class=\"clickable\" id=\"" + i + "\" onclick=\"selectItem(this)\">" + similarItems[i] + "</span><br />")
 	}
     myOptions.innerHTML = (htmlCode).join('');
 	myOptions.style.backgroundColor = 'green';
+	myOptions.style.display = 'block';
 }
 
 
@@ -139,26 +167,31 @@ function onResearchChanged(e){
 	var myOptions = document.getElementById("options_list");
 	var similarResearch = graph.getSimilarResearch(e.value);	
 	var htmlCode = [];
-	htmlCode.push("<b>Similar research (click one):</b><hr />");
+	htmlCode.push("<b>Similar research (click one):</b><span style=\"float:right; border:1px solid black;  padding:2px; margin:-2px; cursor: pointer;\" onclick=\"this.parentElement.style.display='none'\">X</span><hr />");
 	for (i = 0; i < similarResearch.length; i++) 
 	{
 		htmlCode.push("<span class=\"clickable\" id=\"" + i + "\" onclick=\"selectResearch(this)\">" + similarResearch[i] + "</span><br />")
 	}
     myOptions.innerHTML = (htmlCode).join('');
 	myOptions.style.backgroundColor = 'blue';
+	myOptions.style.display = 'block';
 }
 
 </script>
-<div id="header"><h1>Ascendancy Research Requirements</h1><p><a href="https://en.wikipedia.org/wiki/Ascendancy_(video_game)" title="Ascendancy on Wikipedia">Ascendancy</a> is a turn-based strategy PC game from the 1990s. One aspect of the game is incremental research. This tool lets the user search for items or research fields and provides the required fields to enable the desired item. Enter a desired item or research field in one of the text fields below.</p><p>Requirements data courtesy of the <a href="https://www.b-sting.nl/ascendancy/research-list.html" title="research list at Ascendancy: The Manual">Ascendancy Manual at b-sting.nl</a>. As of this writing, Ascendancy is not available for purchase at Good Old Games, but <a href="https://www.gog.com/wishlist/games/ascendancy" title="Ascendancy at GoG">a wishlist entry is posted at the GoG forum</a>.</p>
+<div id="header"><h1>Ascendancy Research Requirements</h1></div>
+<div><span style="float:right; border:1px solid white;  padding:2px; margin:-2px; cursor: pointer;" onclick="this.parentElement.style.display='none'">X</span>
+<p><a href="https://en.wikipedia.org/wiki/Ascendancy_(video_game)" title="Ascendancy on Wikipedia">Ascendancy</a> is a turn-based strategy PC game from the 1990s. One aspect of the game is incremental research. This tool lets the user search for items or research fields and provides the required fields to enable the desired item. Enter a desired item or research field in one of the text fields below.</p><p>Requirements data courtesy of the <a href="https://www.b-sting.nl/ascendancy/research-list.html" title="research list at Ascendancy: The Manual">Ascendancy Manual at b-sting.nl</a>. As of this writing, Ascendancy is not available for purchase at Good Old Games, but <a href="https://www.gog.com/wishlist/games/ascendancy" title="Ascendancy at GoG">a wishlist entry is posted at the GoG forum</a>.</p>
 </div>
 <div id="input" style="display: block;width:100%;margin-top:50px;"><hr />
 <form name="mapper">
-Item: <input type="text" name="search_item" id="search_item" onkeyup="onItemChanged(this)" onfocus="this.select()"> 
-Research: <input type="text" name="search_research" id="search_research" onclick="researchRequirement(this)" onkeyup="onResearchChanged(this)" onfocus="this.select()"><br />
+<input type="text" name="search_item" id="search_item" onkeyup="onItemChanged(this)" onfocus="this.select()" value="item" title="Enter an item name here"> 
+<input type="text" name="search_research" id="search_research" onclick="researchRequirement(this)" onkeyup="onResearchChanged(this)" onfocus="this.select()" value="research" title="Enter an research field name here"><br />
 <hr />
 </form>
 </div>
-
+<div class="slidecontainer">
+  <input type="range" min="1" max="1000" value="1" class="slider" id="slider_bar" oninput="refreshRequirements()" title="Scaling factor for day counts">
+</div>
 <div id="options_list" style="float:left; border:1px solid black; padding:10px;display: block;">
 </div>
 <div id="results" style="float:left; border:1px solid black;padding:10px;display: block;">
